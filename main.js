@@ -9,7 +9,6 @@ const Discord = require('discord.js');
 const config = require('config');
 const client = new Discord.Client();
 const commands = require('./commands.js');
-const reactions = require('./reactions.js')
 const chalk = require('chalk');
 
 const ravenConfig = config.get("Raven.token");
@@ -19,7 +18,6 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
-    reactions(message, message.author);
     if (message.content.startsWith(config.get("Raven.commandkey")) && message.author.bot === false) {
         //const commandName = message.content.split(config.get("Raven.commandkey"))[1].split(" ")[0]; // todo: make this better
         try {
