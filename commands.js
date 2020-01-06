@@ -472,6 +472,17 @@ module.exports = {
         }
     },
 
+    catfact: {
+        args: "catfact",
+        description: "get a random cat fact",
+        use(client, member, channel, message, args) {
+            request.get("https://cat-fact.herokuapp.com/facts", (err, res, body) => {
+                const data = JSON.parse(body)['all'];
+                channel.send(data[Math.floor(Math.random()*data.length)]["text"]);
+            })
+        }
+    },
+
     goat: {
         args: "goat",
         description: "shows a random picture of a goat",
