@@ -1,3 +1,9 @@
-node_modules
-.vscode
-default.json
+.idea/
+.vscode/
+node_modules/
+build/
+tmp/
+temp/
+*.js
+*.js.map
+.env
