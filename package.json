@@ -6,7 +6,7 @@
   "dependencies": {
     "@types/randomcolor": "^0.5.4",
     "@types/shuffle-array": "0.0.28",
-    "acorn": "^7.1.0",
+    "acorn": "^7.1.1",
     "acorn-jsx": "^5.1.0",
     "ansi-escapes": "^4.2.1",
     "ansi-regex": "^4.1.0",
