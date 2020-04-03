@@ -1,5 +1,5 @@
 import { Attachment, GuildMember, TextChannel, Message } from "discord.js";
-import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
+import axios, { AxiosResponse } from "axios";
 import shuffle from "lodash/shuffle";
 
 export default {
@@ -42,12 +42,11 @@ export default {
             });
           break;
         case "goat":
-          const data: AxiosRequestConfig = {
+          axios({
             url: "https://placegoat.com/400",
             responseType: "stream",
             method: "get",
-          };
-          axios(data).then((res: AxiosResponse) => {
+          }).then((res: AxiosResponse) => {
             channel.send(new Attachment(res.data));
           });
           break;

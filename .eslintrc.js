@@ -1,11 +1,26 @@
 module.exports = {
+  root: true,
   parser: "@typescript-eslint/parser",
-  extends: ["plugin:@typescript-eslint/recommended"],
-  parserOptions: {
-    emcaVersion: 2018,
-    sourceType: "module",
-  },
+  plugins: ["@typescript-eslint"],
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "prettier/@typescript-eslint",
+  ],
   rules: {
-    "@typescript-eslint/no-unused-vars": [0],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        args: "none",
+      },
+    ],
+    "@typescript-eslint/camelcase": [
+      "error",
+      {
+        allow: ["api_key"],
+      },
+    ],
   },
 };

@@ -37,9 +37,9 @@ function eGet(
   };
   axios(data).then((res: AxiosResponse) => {
     const post = shuffle(
-      res.data.posts.filter((x) => {
-        return x.tags.general.every((z) => {
-          return !blacklist.includes(z);
+      res.data.posts.filter((post: any) => {
+        return post.tags.general.every((tag: string) => {
+          return !blacklist.includes(tag);
         });
       }),
     )[0];
@@ -74,7 +74,7 @@ export default {
       message: Message,
       args: string[],
     ): Promise<Message | Message[]> | void {
-      if (args.filter((x) => blacklist.includes(x)).length > 0)
+      if (args.filter((tag: string) => blacklist.includes(tag)).length > 0)
         return channel.send("Your search cannot include blacklisted tags.");
       if (!channel.nsfw) {
         channel.send(

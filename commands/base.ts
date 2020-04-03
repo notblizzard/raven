@@ -10,13 +10,6 @@ import {
 import axios, { AxiosResponse } from "axios";
 import commands from "./";
 
-const emojis = {
-  "1": "1%EF%B8%8F%E2%83%A3",
-  "2": "2%EF%B8%8F%E2%83%A3",
-  "3": "3%EF%B8%8F%E2%83%A3",
-  "4": "4%EF%B8%8F%E2%83%A3",
-};
-
 interface CommandHelp {
   args: string;
   description: string;
