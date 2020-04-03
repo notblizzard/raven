@@ -2,6 +2,14 @@ import { Attachment, GuildMember, TextChannel, Message } from "discord.js";
 import axios, { AxiosResponse } from "axios";
 import shuffle from "lodash/shuffle";
 
+interface CatFacts {
+  length: number;
+  all: [
+    {
+      [key: string]: string;
+    },
+  ];
+}
 export default {
   randomanimal: {
     args: "randomanimal <animal>",
@@ -70,8 +78,10 @@ export default {
       axios
         .get("https://cat-fact.herokuapp.com/facts")
         .then((res: AxiosResponse) => {
-          const data: string = res.data.all;
-          channel.send(data[Math.floor(Math.random() * data.length)]["text"]);
+          const data: CatFacts = res.data;
+          const fact = data.all[Math.floor(Math.random() * data.all.length)];
+          console.log(fact);
+          channel.send(fact.text);
         });
     },
   },

@@ -3,16 +3,16 @@ import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
 @Entity({ name: "users" })
 export default class User extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column({ nullable: true })
-  discordId: string;
+  discordId!: string;
 
   @Column({ nullable: true })
-  lastFmName: string;
+  lastFmName!: string;
 
   @Column({ default: 0 })
-  points: number;
+  points!: number;
 
   static async findOrCreate(discordId: string): Promise<User> {
     const user = await User.findOne({ discordId });

@@ -17,6 +17,12 @@ const blacklist: string[] = [
   "underage",
 ];
 
+interface Post {
+  tags: {
+    general: string[];
+  };
+}
+
 function eGet(
   channel: TextChannel,
   member: GuildMember,
@@ -37,7 +43,7 @@ function eGet(
   };
   axios(data).then((res: AxiosResponse) => {
     const post = shuffle(
-      res.data.posts.filter((post: any) => {
+      res.data.posts.filter((post: Post) => {
         return post.tags.general.every((tag: string) => {
           return !blacklist.includes(tag);
         });

@@ -12,6 +12,17 @@ import {
   Message,
 } from "discord.js";
 
+interface YoutubeData {
+  name: string;
+  album: {
+    "#text": string;
+  };
+  artist: {
+    "#text": string;
+  };
+  image: [unknown, unknown, { "#text": string }];
+}
+
 export default {
   lastfm: {
     args: "lastfm <user> | lastfm link <user>",
@@ -30,7 +41,7 @@ export default {
           `Your Discord name is now updated to the LastFM account "${user.lastFmName}".`,
         );
       } else {
-        const lastFmApiKey: string = process.env.RAVEN_LASTFM_API;
+        const lastFmApiKey: string | undefined = process.env.RAVEN_LASTFM_API;
         const queryData = {
           method: "user.getrecenttracks",
           user: user.lastFmName,
@@ -48,15 +59,15 @@ export default {
         };
 
         axios(data).then((res) => {
-          const data: object = res.data.recenttracks.track[0];
+          const data: YoutubeData = res.data.recenttracks.track[0];
           const embed = new RichEmbed()
             .setTitle(`${member.user.username}'s LastFM`)
             .setAuthor(member.user.username, member.user.avatarURL)
-            .addField("Author", data["artist"]["#text"])
-            .addField("Song", data["name"])
-            .addField("Album", data["album"]["#text"])
+            .addField("Author", data.artist["#text"])
+            .addField("Song", data.name)
+            .addField("Album", data.album["#text"])
             .setColor(randomcolor())
-            .setThumbnail(data["image"][2]["#text"]);
+            .setThumbnail(data.image[2]["#text"]);
 
           channel.send(embed);
         });

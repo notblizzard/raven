@@ -22,5 +22,6 @@ module.exports = {
         allow: ["api_key"],
       },
     ],
+    "dot-notation": [2],
   },
 };

@@ -4,6 +4,8 @@
   "description": "discord bot made with discord.js and typescript.",
   "main": "main.js",
   "dependencies": {
+    "@types/randomcolor": "^0.5.4",
+    "@types/shuffle-array": "0.0.28",
     "acorn": "^7.1.0",
     "acorn-jsx": "^5.1.0",
     "ansi-escapes": "^4.2.1",
@@ -113,7 +115,7 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.149",
-    "@types/node": "^13.9.1",
+    "@types/node": "^13.11.0",
     "@types/qs": "^6.9.1",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",
@@ -125,7 +127,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node -r dotenv/config dist/main.js"
+    "start": "tsc && node -r dotenv/config dist/main.js",
+    "dev": "nodemon -r dotenv/config --ext ts --exec ts-node main"
   },
   "repository": {
     "type": "git",

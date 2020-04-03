@@ -10,9 +10,42 @@ import {
 import axios, { AxiosResponse } from "axios";
 import commands from "./";
 
-interface CommandHelp {
+interface Votes {
+  [key: string]: number;
+}
+
+interface Commands {
+  [key: string]: {
+    args: string;
+    description: string;
+    use: (
+      member: GuildMember,
+      channel: TextChannel,
+      message: Message,
+      args: string[],
+    ) =>
+      | string
+      | void
+      | Promise<void>
+      | Promise<Message | Message[]>
+      | Promise<Message>;
+  };
+}
+
+interface Command {
   args: string;
   description: string;
+  use: (
+    member: GuildMember,
+    channel: TextChannel,
+    message: Message,
+    args: string[],
+  ) =>
+    | string
+    | void
+    | Promise<void>
+    | Promise<Message | Message[]>
+    | Promise<Message>;
 }
 export default {
   help: {
@@ -24,18 +57,19 @@ export default {
       message: Message,
       args: string[],
     ): void {
+      const commandsList: Commands = commands;
       if (args[0] === "all") {
-        const commandsList: string[] = [];
+        const commandsHelpList: string[] = [];
         for (const command in commands) {
           if (command !== "help") {
-            commandsList.push(
-              `${process.env.RAVEN_COMMAND_KEY}**${commands[command].args}** - ${commands[command].description}`,
+            commandsHelpList.push(
+              `${process.env.RAVEN_COMMAND_KEY}**${commandsList[command].args}** - ${commandsList[command].description}`,
             );
           }
         }
         channel.send(commands);
       } else {
-        const command: CommandHelp = commands[args[0]];
+        const command: Command = commandsList[args[0]];
         channel.send(
           `${process.env.RAVEN_COMMAND_KEY}**${command.args}** - ${command.description}`,
         );
@@ -84,7 +118,7 @@ export default {
         },
       };
       axios(requestData).then((res: AxiosResponse) => {
-        const definition: string = res.data.definitions[0]["definition"];
+        const definition: string = res.data.definitions[0].definition;
         channel.send(`**${args}**: ${definition}`);
       });
     },
@@ -99,7 +133,7 @@ export default {
       message: Message,
       args: string[],
     ): Promise<void> {
-      const votes = {
+      const votes: Votes = {
         "1️⃣": 0,
         "2️⃣": 0,
         "3️⃣": 0,
@@ -137,13 +171,14 @@ export default {
         });
 
         collector.on("end", () => {
-          const highestVote = Object.keys(votes).sort(
+          const highestVote: unknown = Object.keys(votes).sort(
             (x, z) => votes[z] - votes[x],
           )[0];
-          const votesName: string = votes[highestVote] === 1 ? "vote" : "votes";
+          const votesName: string =
+            votes[highestVote as number] === 1 ? "vote" : "votes";
           channel.send(
-            `**${args[highestVote[0]]}** (${highestVote}) wins with ${
-              votes[highestVote]
+            `**${args[highestVote as number]}** (${highestVote}) wins with ${
+              votes[highestVote as string]
             } ${votesName}.`,
           );
         });
@@ -168,7 +203,7 @@ export default {
         },
       };
       axios(requestData).then((res: AxiosResponse) => {
-        channel.send(res.data["joke"]);
+        channel.send(res.data.joke);
       });
     },
   },

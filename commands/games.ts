@@ -51,18 +51,18 @@ export default {
           "https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986",
         )
         .then((res: AxiosResponse) => {
-          const data = res.data["results"][0];
-          const question: string = data["question"].replace(/&quot;/g, '"');
+          const data = res.data.results[0];
+          const question: string = data.question.replace(/&quot;/g, '"');
           const triviaUser: TriviaUser = member.user;
           triviaUser.trivia = true;
-          const choices: string[] = Object.values(data["incorrect_answers"]);
-          choices.push(data["correct_answer"]);
+          const choices: string[] = Object.values(data.incorrect_answers);
+          choices.push(data.correct_answer);
           shuffle(choices);
           choices.map((i) => i.replace(/&#039;/g, "'").replace(/&quot;/g, '"'));
           const difficulty: string = data.difficulty;
           const correctAnswerNumber: number =
-            choices.indexOf(data["correct_answer"]) + 1;
-          const correctAnswer: string = data["correct_answer"];
+            choices.indexOf(data.correct_answer) + 1;
+          const correctAnswer: string = data.correct_answer;
           const embed: RichEmbed = new RichEmbed()
             .setTitle(`${triviaUser.username}'s Question`)
             .setAuthor(triviaUser.username, triviaUser.avatarURL)
