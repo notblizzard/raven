@@ -164,7 +164,6 @@ export default {
         });
         collector.on("collect", (r: MessageReaction) => {
           votes[r.emoji.name] += 1;
-          console.log(votes);
         });
         collector.on("remove", (r: MessageReaction) => {
           votes[r.emoji.name] -= 1;

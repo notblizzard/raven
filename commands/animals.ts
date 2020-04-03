@@ -80,7 +80,6 @@ export default {
         .then((res: AxiosResponse) => {
           const data: CatFacts = res.data;
           const fact = data.all[Math.floor(Math.random() * data.all.length)];
-          console.log(fact);
           channel.send(fact.text);
         });
     },

@@ -39,9 +39,7 @@ client.on("message", (message: Discord.Message) => {
     const commandName: string = args[0];
     if (Object.keys(commands).includes(commandName)) {
       args.shift();
-      console.log("sent");
       const command = commandsList[commandName];
-      console.log(command);
       command.use(
         message.member,
         message.channel as TextChannel,
