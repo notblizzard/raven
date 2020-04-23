@@ -10,9 +10,10 @@ import {
   TextChannel,
   VoiceConnection,
   Message,
+  Guild,
 } from "discord.js";
 
-interface YoutubeData {
+interface LastFMData {
   name: string;
   album: {
     "#text": string;
@@ -24,6 +25,57 @@ interface YoutubeData {
 }
 
 export default {
+  toplastfmtracks: {
+    args: "toplastfmtracks <user>",
+    description: "gets top last.fm tracks of <user>",
+    async use(
+      member: GuildMember,
+      channel: TextChannel,
+      message: Message,
+      args: string[],
+    ): Promise<void> {
+      const user = await User.findOrCreate(member.user.id);
+      const lastFmApiKey: string | undefined = process.env.RAVEN_LASTFM_API;
+      const queryData = {
+        method: "user.gettoptracks",
+        user: user.lastFmName,
+        api_key: lastFmApiKey,
+        format: "json",
+        limit: "5",
+      };
+      const data: AxiosRequestConfig = {
+        method: "GET",
+        data: qs.stringify(queryData, {}),
+        headers: {
+          "User-Agent": "WhatIsABlizzard/Raven",
+        },
+        url: "https://ws.audioscrobbler.com/2.0/",
+      };
+      axios(data).then((res) => {
+        const tracks = res.data.toptracks.track.map((track: any) => {
+          return {
+            artist: track.artist,
+            name: track.name,
+            image: track.image,
+            duration: track.duration,
+            url: track.url,
+            playcount: track.playcount,
+          };
+        });
+        const embed = new RichEmbed()
+          .setTitle(`${member.user.username}'s Top LastFM Tracks`)
+          .setAuthor(member.user.username, member.user.avatarURL)
+          .addField(tracks[0].artist.name, tracks[0].name)
+          .addField(tracks[1].artist.name, tracks[1].name)
+          .addField(tracks[2].artist.name, tracks[2].name)
+          .addField(tracks[3].artist.name, tracks[3].name)
+          .addField(tracks[4].artist.name, tracks[4].name)
+          .setColor(randomcolor());
+
+        channel.send(embed);
+      });
+    },
+  },
   lastfm: {
     args: "lastfm <user> | lastfm link <user>",
     description: "gets last.fm of <user>, or link <user> to you",
@@ -59,7 +111,7 @@ export default {
         };
 
         axios(data).then((res) => {
-          const data: YoutubeData = res.data.recenttracks.track[0];
+          const data: LastFMData = res.data.recenttracks.track[0];
           const embed = new RichEmbed()
             .setTitle(`${member.user.username}'s LastFM`)
             .setAuthor(member.user.username, member.user.avatarURL)
