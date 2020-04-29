@@ -12,6 +12,31 @@ interface TriviaUser extends User_ {
 }
 
 export default {
+  dice: {
+    args: "dice <numberOfDice>d<sides>",
+    description: "roll <numberOfDice> of dice that have <sides> sides",
+    async use(
+      member: GuildMember,
+      channel: TextChannel,
+      message: Message,
+      args: string[],
+    ): Promise<Message | Message[]> {
+      const numberOfDice = Number(args[0].split("d")[0]);
+      const sides = Number(args[0].split("d")[1]);
+      const results: number[] = [];
+      for (let i = 0; i < numberOfDice; i++) {
+        const result: number =
+          Math.floor(Math.random() * Math.floor(sides)) + 1;
+        results.push(result);
+      }
+      return channel.send(
+        `:game_die: Roll ${numberOfDice} ${sides}-sided dice. :game_die: \n:game_die: Results: ${results.join(
+          ", ",
+        )}. Total: ${results.reduce((x, y) => x + y)}.:game_die:`,
+      );
+    },
+  },
+
   points: {
     args: "points | points <user>",
     description: "get points of yourself, or <user>",
