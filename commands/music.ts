@@ -24,6 +24,14 @@ interface LastFMData {
   image: [unknown, unknown, { "#text": string }];
 }
 
+interface LastFMTrack {
+  artist: string;
+  name: string;
+  image: string;
+  duration: string;
+  url: string;
+  playcount: string;
+}
 export default {
   toplastfmtracks: {
     args: "toplastfmtracks <user>",
@@ -52,7 +60,7 @@ export default {
         url: "https://ws.audioscrobbler.com/2.0/",
       };
       axios(data).then((res) => {
-        const tracks = res.data.toptracks.track.map((track: any) => {
+        const tracks = res.data.toptracks.track.map((track: LastFMTrack) => {
           return {
             artist: track.artist,
             name: track.name,
