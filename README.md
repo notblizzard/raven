@@ -1,2 +1,3 @@
 # Raven
-Discord bot in Node.JS.
+
+Discord bot in Python.
